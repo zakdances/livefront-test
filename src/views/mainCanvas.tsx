@@ -1,17 +1,15 @@
-import React, { useRef, useState } from 'react';;
-import { createRoot } from 'react-dom/client';
+import { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import type { ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { log } from 'three/tsl';
 
 function Box(props: ThreeElements['mesh']) {
     const meshRef = useRef<THREE.Mesh>(null!);
     const [hovered, setHover] = useState(false);
     const [active, setActive] = useState(false);
 
-    useFrame((state, delta) => (meshRef.current.rotation.x += delta));
+    useFrame((_, delta) => (meshRef.current.rotation.x += delta));
 
     // Instantiate a loader
     const loader = new GLTFLoader();
@@ -19,10 +17,10 @@ function Box(props: ThreeElements['mesh']) {
     // Load a glTF resource
     loader.load(
         // resource URL
-        // 'https://3d-api.si.edu/content/document/3d_package:306c5849-feab-425a-86dc-ec1aed717d65/USNM016308_cranium_mandible_-600-150k-1024-low.glb',
-        'https://api.poly.pizza/v1.1/search/{keyword}?apiKey={apiKey}',
+        'https://3d-api.si.edu/content/document/3d_package:306c5849-feab-425a-86dc-ec1aed717d65/USNM016308_cranium_mandible_-600-150k-1024-low.glb',
+        // 'https://api.poly.pizza/v1.1/search/{keyword}?apiKey={apiKey}',
         // called when the resource is loaded
-        function (gltf: any) {
+        function (_) {
 
             // scene.add(gltf.scene);
 
@@ -54,9 +52,9 @@ function Box(props: ThreeElements['mesh']) {
             {...props}
             ref={meshRef}
             scale={active ? 1.5 : 1}
-            onClick={(event) => setActive(!active)}
-            onPointerOver={(event) => setHover(true)}
-            onPointerOut={(event) => setHover(false)}>
+            onClick={(_) => setActive(!active)}
+            onPointerOver={(_) => setHover(true)}
+            onPointerOut={(_) => setHover(false)}>
             <boxGeometry args={[1, 1, 1]} />
             <meshStandardMaterial color={hovered ? 'hotpink' : '#2f74c0'} />
         </mesh>

@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
-import reactLogo from './assets/react.svg';
-import { useSelector, useDispatch } from 'react-redux';
-import { BrowserRouter, Routes, Route } from "react-router";
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Routes, Route } from "react-router";
 import { addItem } from './view model/slices/mainList';
 
-import viteLogo from '/vite.svg';
 import './App.css';
 import MainList from './views/mainList';
 import MainCanvas from './views/mainCanvas';
@@ -20,12 +18,14 @@ function App() {
       const url = 'https://api.poly.pizza/v1.1/search/architecture';
       try {
         console.log('Fetching data from:', url);
-        const response = await fetch(url, {
-          headers: {
-            'X-Auth-Token': import.meta.env.VITE_API_KEY,
-            'Content-Type': 'application/json' // Optional: Specify the content type
+        const response = await fetch(url,
+          {
+            headers: {
+              'X-Auth-Token': import.meta.env.VITE_API_KEY,
+              'Content-Type': 'application/json' // Optional: Specify the content type
+            }
           }
-        });
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

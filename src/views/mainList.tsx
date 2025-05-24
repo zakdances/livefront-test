@@ -1,5 +1,5 @@
 import type { RootState } from './../view model/store';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { NavLink } from "react-router";
 
 function MainList() {

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Routes, Route } from "react-router";
-import { useLocation } from 'react-router-dom';
+// import { Routes, Route } from "react-router";
+import { useLocation, Routes, Route } from 'react-router-dom';
 import { addItem } from './view model/slices/mainList';
 
 import './App.css';
@@ -52,7 +52,6 @@ function App() {
 
     fetchData();
 
-    // The empty dependency array ensures this effect runs only once, similar to componentDidMount
   }, []);
 
   return (

@@ -6,38 +6,10 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { useSelector } from 'react-redux';
 import type { RootState } from './../view model/store';
-import { useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 import { useGLTF, useTexture, Center, Decal, Text3D, OrbitControls } from '@react-three/drei';
 import { Text } from "troika-three-text";
 import TroikaText from './TroikaText';
-
-// const TroikaText = ({
-//   text = 'Hello world',
-//   fontSize = 0.2,
-//   color = 'white',
-//   ...props
-// }) => {
-//   const textRef = useRef()
-
-//   // Update text layout when text or props change
-//   useLayoutEffect(() => {
-//     if (textRef.current) {
-//       textRef.current.sync()
-//     }
-//   }, [text, fontSize, color])
-
-//   return (
-//     <troikaText
-//       ref={textRef}
-//       text={text}
-//       fontSize={fontSize}
-//       color={color}
-//       anchorX="center"
-//       anchorY="middle"
-//       {...props}
-//     />
-//   )
-// }
 
 function Box(props: ThreeElements['mesh']) {
     const meshRef = useRef<THREE.Mesh>(null!);

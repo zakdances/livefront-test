@@ -1,6 +1,6 @@
 import type { RootState } from './../view model/store';
 import { useSelector } from 'react-redux';
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 
 function MainList() {
     const items = useSelector((state: RootState) => state.mainList.items);

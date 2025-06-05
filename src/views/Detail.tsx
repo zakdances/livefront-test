@@ -7,8 +7,7 @@ function Detail() {
                 <button>Back</button>
             </NavLink>
 
-            <h1>Detail View</h1>
-            <p>This is the detail page.</p>
+
         </div>
     );
 };

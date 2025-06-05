@@ -3,14 +3,14 @@ import { useSelector } from 'react-redux';
 import { NavLink } from "react-router";
 
 function MainList() {
-    const items = useSelector((state: RootState) => state.mainList.items)
+    const items = useSelector((state: RootState) => state.mainList.items);
 
     return (
         <div className="mainList">
             <ul>
-                {items.map((item, index) => (
+                {items.slice(0, 3).map((item, index) => (
                     <li key={index}>
-                        <NavLink to="/detail" end>
+                        <NavLink to={`/detail?article=${index}`} end>
                             {item.title}
                         </NavLink>
                     </li>

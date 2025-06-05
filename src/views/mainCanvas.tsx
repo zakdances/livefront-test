@@ -1,8 +1,43 @@
-import { useRef, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import type { ThreeElements } from '@react-three/fiber';
+import { useRef, useState, useLayoutEffect } from 'react';
+import { Canvas, useFrame, useLoader, extend } from '@react-three/fiber';
+import type { ThreeElements, ThreeElement } from '@react-three/fiber';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { useSelector } from 'react-redux';
+import type { RootState } from './../view model/store';
+import { useSearchParams } from 'react-router';
+import { useGLTF, useTexture, Center, Decal, Text3D, OrbitControls } from '@react-three/drei';
+import { Text } from "troika-three-text";
+import TroikaText from './TroikaText';
+
+// const TroikaText = ({
+//   text = 'Hello world',
+//   fontSize = 0.2,
+//   color = 'white',
+//   ...props
+// }) => {
+//   const textRef = useRef()
+
+//   // Update text layout when text or props change
+//   useLayoutEffect(() => {
+//     if (textRef.current) {
+//       textRef.current.sync()
+//     }
+//   }, [text, fontSize, color])
+
+//   return (
+//     <troikaText
+//       ref={textRef}
+//       text={text}
+//       fontSize={fontSize}
+//       color={color}
+//       anchorX="center"
+//       anchorY="middle"
+//       {...props}
+//     />
+//   )
+// }
 
 function Box(props: ThreeElements['mesh']) {
     const meshRef = useRef<THREE.Mesh>(null!);
@@ -62,25 +97,64 @@ function Box(props: ThreeElements['mesh']) {
 }
 
 function MainCanvas() {
-    // This reference will give us direct access to the mesh
-    //   const meshRef = useRef();
-    // Set up state for the hovered and active state
-    //   const [hovered, setHover] = useState(false);
-    //   const [active, setActive] = useState(false);
-    // Subscribe this component to the render-loop, rotate the mesh every frame
-    //   useFrame((state, delta) => (meshRef.current.rotation.x += delta));
 
-    // Return view, these are regular three.js elements expressed in JSX
+    let [searchParams] = useSearchParams();
+
+    const items = useSelector((state: RootState) => state.mainList.items);
+    const itemIndex = searchParams.get("article");
+    const title = itemIndex ? items[parseInt(itemIndex)]?.title : "";
+    const abstract = itemIndex ? items[parseInt(itemIndex)]?.abstract : "";
+
+    const obj = useLoader(OBJLoader, 'Paper/518 Paper.obj');
+    const degToRad = (deg: number) => (deg * Math.PI) / 180;
+
+    const titleRef = useRef<any>(null)
+  const [bodyOffset, setBodyOffset] = useState(-1.4) // default fallback
+
+  useLayoutEffect(() => {
+  if (titleRef.current?.textRenderInfo) {
+    const info = titleRef.current.textRenderInfo
+    const height = info.blockBounds[3] - info.blockBounds[1]
+    const spacing = 0.1
+    setBodyOffset(-1 - height - spacing)
+  }
+}, [title])
 
     return (
-        <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: -1 }}>
+        <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 1 }}>
             <Canvas>
                 <ambientLight intensity={Math.PI / 2} />
                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
                 <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-                <Box position={[-1.2, 0, 0]} />
-                <Box position={[1.2, 0, 0]} />
-            </Canvas>,
+
+
+                <Center>
+
+                    <primitive object={obj}
+                        scale={[0.1, 0.1, 0.1]}
+                        rotation={[degToRad(0), degToRad(90), degToRad(85)]} // tilt 45° around the X axis
+                    />
+                    
+                    {/* <TroikaText ref={titleRef} text={title} fontSize={0.25} color="#444" position={[0, -1, 1]} maxWidth={3.5} /> */}
+                    <TroikaText text={abstract} fontSize={0.15} color="#444" position={[0, 0, 1]} maxWidth={3.5} />
+                    
+                </Center>
+
+                <OrbitControls
+                // enableZoom={true}
+                // enablePan={true}
+                // enableRotate={true}
+                // minDistance={1}
+                // maxDistance={10}
+                // minPolarAngle={0}
+                // maxPolarAngle={Math.PI / 2}
+                // minAzimuthAngle={-Math.PI / 2}
+                // maxAzimuthAngle={Math.PI / 2}
+                // target={[0, 0, 0]}
+                >
+                </OrbitControls>
+
+            </Canvas>
         </div>
     );
 };
